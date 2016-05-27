@@ -1,0 +1,47 @@
+普通for循环和加强版for循环的区别：
+示例：
+List<String> list = new ArrayList<String>();
+		list.add("aaa111");
+		list.add("bbb111");
+		list.add("aa2222");
+		list.add("a33333");
+		list.add("ccc111");
+		listForTest(list);
+public static void listForTest(List<String> list){
+		/*String temp = "";
+		for(int i=0 ; i<list.size() ; i++){
+			temp = list.get(i);
+			System.out.println("current element : "+temp);
+			if(temp.startsWith("a")){
+				list.remove(temp);
+			}
+		}*/
+		for(String s: list){
+			System.out.println("current element : "+s);
+			if(s.startsWith("a")){
+				list.remove(s);
+			}
+		}
+}
+
+public static void listIteratorTest(List<String> list){
+		Iterator<String> iterator = list.iterator();
+		String temp = "";
+		while(iterator.hasNext()){
+			temp = iterator.next();
+			System.out.println("iterator current element :"+temp);
+			if(temp.startsWith("a")){
+				iterator.remove();
+			}
+		}
+		System.out.println(list.size());
+}
+1、普通for循环进行循环删除操作时不会报错，但结果会导致和预想的结果不一致。原因：删除一个元素，list集合长度会减一，而当前的计数器i值仍然会进行加一，
+导致删除的元素后面的那个元素不能取出（i值加一了）。
+2、加强for循环进行循环删除操作时会报异常：ConcurrentModificationException。加强for循环遍历其实是利用了底层的iterator迭代器。
+此时进行remove()操作，相当于改变了iterator所对应的list对象，理所应当抛异常。
+3、iterator方式进行循环迭代删除时能正确执行。注意：一定要iterator.remove(O)，如果使用list.remove(O)，就会和加强的for循环是一样的效果。
+以上所有试验都在单线程前提环境下。
+
+
+若集合为map集合，则无论使用哪种都会抛异常。

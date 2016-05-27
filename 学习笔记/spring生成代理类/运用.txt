@@ -1,0 +1,5 @@
+private SmsMarketingSmsService self;//AOP增强后的代理对象  
+	@Override
+	public void setSelf(Object proxyBean) {
+		self = (SmsMarketingSmsService) proxyBean;
+	}

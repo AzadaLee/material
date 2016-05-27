@@ -1,0 +1,8 @@
+1、新建工作空间
+2、新打开一个eclipse
+3、打开SVN资源窗口，添加资源URL
+4、检出项目为：选择到第一步建的工作空间
+5、删除sts中的项目
+6、配置gradle
+7、import资源，选择gradle，选择到webservice目录
+8、build model

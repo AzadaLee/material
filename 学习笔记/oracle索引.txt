@@ -1,0 +1,29 @@
+oracle Index:
+types
+一、唯一索引
+	1、应用场景：当某列的任意两条记录都没有相同值时；
+	2、当创建primary key或unique constraint时，唯一索引将自动被创建；
+	3、语法：create unique index [index_name] on table(column)；
+二、组合索引
+	1、应用场景：当两个或多个列经常一起出现在where条件中时，则在这些列上同时创建组合索引；
+	2、组合索引中的顺序是任意的，无需相邻。但是建议将最长访问的列放在列表的最前面；
+	3、语法：create index [index_name] on table(column1,column2,......);
+		结合2的意思，当column1最常被访问，建议将column放在列表的最前面
+		
+	有关SQL优化的内容，其中提到建立组合索引最好是将 经常等值查询的列放在前面
+	例如 表中有 name, time 两个字段，name经常被等值查询，time经常被范围查询
+	那么如果需要将这两个字段建组合索引的时候，就应该建成（name, time）这样的顺序
+	给出的解释是：因为索引都是有序的，组合索引根据前导列排序，也就是name排序；如果查询name=abc，当Oracle看到name=b~~的就可以认为后面再无abc了，就不继续往下找了
+	例如查询 name=abc and time>2007 and time < 2014 
+	Oracle会从name往下扫描，当扫描到aca就会停止扫描，即便name=abc的记录对应的time只有2008，2009其他年份都没有，Oracle也不会继续往后找了
+	但是如果建立成（time， name）索引中按照time排序，那么Oracle 就会遍历time = 2008,2009,2010,2011,2012,2013
+	即便2010~2013都没有name=abc的情况，Oracle也会都遍历到
+	所以建立组合索引要把经常等值查询的放前面
+
+三、位图索引
+	1、应用场景：某列中有非常多重复值的时候。如保存性别的某列；
+				 Where条件中包含了很多or操作符；
+				 较少的update操作，因为要相应的更新所有的bitmap;
+	2、结构：位图索引使用位图作为键值，对于表中的每一数据行位图包含了true(1),false(0),或null值
+	3、 优点：位图以一种压缩格式存放，因此占用的磁盘空间比标准索引要小得多
+	4、语法：create bitmap index [index_name] on table(column1 [,column2,.......])

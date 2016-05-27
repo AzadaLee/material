@@ -1,0 +1,50 @@
+连接查询on...and 和 on...where的区别：
+表1 tab1：
+id size
+1 10
+2 20
+3 30
+
+表2 tab2：
+size name
+10 AAA
+20 BBB
+20 CCC
+
+sql:
+1、select * form tab1 left join tab2 on (tab1.size = tab2.size) where tab2.name=’AAA’;
+2、select * form tab1 left join tab2 on (tab1.size = tab2.size and tab2.name=’AAA’);
+3、select * from tab1 left join tab2 on tab1.size = tab2.size and tab1.id = 1;
+
+对于1查询过程
+中间表：
+tab1.id    tab1.size   			tab2.size     	tab2.name
+1              10                  10              AAA
+2             20                    20             BBB
+2            20                     20             CCC
+3            30                   (null)           (null)
+再对中间表过滤
+where 条件：
+tab2.name=’AAA’
+tab1.id      tab1.size       tab2.size     tab2.name
+1                 10                 10             AAA
+
+对于2查询过程：
+中间表
+on条件: 
+tab1.size = tab2.size and tab2.name=’AAA’
+(条件不为真也会返回左表中的记录)
+tab1.id      tab1.size        tab2.size       tab2.name
+1              10                    10                  AAA
+2              20                  (null)              (null)
+3              30                   (null)                (null)
+
+对于3查询过程：
+tab1.id    tab1.size   			tab2.size     	tab2.name
+1              10                  10              AAA
+2             20                  (null)           (null)
+2            20                   (null)           (null)
+3            30                   (null)           (null)
+
+总结：左连接查询，先将主表（左表）先全部查出，再根据on条件进行筛选右表，若此时on条件后面的and条件有主表的单独限制，其实是不起作用的。
+其实以上结果的关键原因就是left join,right join,full join的特殊性，不管on上的条件是否为真都会返回left或right表中的记录，full则具有left和right的特性的并集。而inner jion没这个特殊性，则条件放在on中和where中，返回的结果集是相同的。

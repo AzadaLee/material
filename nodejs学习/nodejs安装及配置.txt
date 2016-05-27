@@ -1,0 +1,10 @@
+nodejs npm安装：
+可参考：http://xiaoyaojones.blog.163.com/blog/static/28370125201351501113581/
+1、下载Node.js安装包及源码下载地址为：https://nodejs.org/en/download/。
+2、安装到指定目录；
+3、此时nodejs的path会自动配置到系统的环境变量（可以在dos命令窗口输入：node -v 进行验证）
+4、配置nmp
+	系统环境变量中新建环境变量：NODE_PATH: D:\Program Files\common\nodejs\node_modules（nodejs安装目录下的npm文件夹）
+	修改用户变量中的PATH:D:\Program Files\common\nodejsnode_global\
+	
+	输入npm -v 验证是否安装成功

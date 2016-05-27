@@ -1,0 +1,51 @@
+﻿Java项目开发环境构建工具 Gradle 使用笔记(简单、基本)
+http://yidwo.iteye.com/blog/1848990
+
+ibatis 到 MyBatis区别
+http://blog.csdn.net/techbirds_bao/article/details/9235309
+
+大型网站系统架构的演化
+http://www.cnblogs.com/leefreeman/p/3993449.html
+
+zhang的笔记 - 记笔记 - 私塾在线 - 只做精品视频课程服务
+sishuok.com/forum/blogAdmin/list.html?customer_id=10000001
+
+从面向对象的设计模式看软件设计 | 酷 壳 - CoolShell.cn
+coolshell.cn/articles/8961.html
+
+Groovy入门教程 - kmyhy的专栏 - 博客频道 - CSDN.NET
+blog.csdn.net/kmyhy/article/details/4200563
+
+Java项目开发环境构建工具 Gradle 使用笔记(简单、基本) - Jahe's Blog - ITeye技术网站
+yidwo.iteye.com/blog/1848990
+
+Spring MVC之@RequestMapping 详解 - kobejayandy的专栏 - 博客频道 - CSDN.NET
+blog.csdn.net/kobejayandy/article/details/12690041
+
+Gradle入门系列（1）：简介 - 博客 - 伯乐在线
+blog.jobbole.com/71999/
+
+Redis快速入门 - Redis教程
+www.yiibai.com/redis/redis_quick_guide.html
+
+ehcache 缓存使用 - 李双喆 - 博客频道 - CSDN.NET
+blog.csdn.net/lishuangzhe7047/article/details/41680921
+
+所有关于程晓明的内容
+www.infoq.com/cn/author/程晓明
+
+Java Web应用中调优线程池的重要性
+www.infoq.com/cn/articles/the-importance-of-thread-pool-in-java-web-application?utm_campaign=rightbar_v2&utm_source=infoq&utm_medium=articles_link&utm_content=link_text
+
+java的concurrent用法详解 - OPEN开源论坛
+www.open-open.com/bbs/view/1320131360999/
+
+left join on and 与 left join on where的区别 - 一个人有了信仰，不管成不成功，至少不会迷茫。 - 博客频道 - CSDN.NET
+blog.csdn.net/xingfeng0501/article/details/7816703
+
+ibatis 到 MyBatis区别 - TechBirds在路上 - 博客频道 - CSDN.NET
+blog.csdn.net/techbirds_bao/article/details/9235309
+
+Java面试经历 （腾讯、阿里、美团、e代驾、唯品会等） - Fly_Sky之听香水榭 - 博客频道 - CSDN.NET
+http://blog.csdn.net/fly_sky520/article/details/47374345
+
