@@ -47,5 +47,7 @@ ibatis 到 MyBatis区别 - TechBirds在路上 - 博客频道 - CSDN.NET
 blog.csdn.net/techbirds_bao/article/details/9235309
 
 Java面试经历 （腾讯、阿里、美团、e代驾、唯品会等） - Fly_Sky之听香水榭 - 博客频道 - CSDN.NET
-http://blog.csdn.net/fly_sky520/article/details/47374345
 
+http://blog.csdn.net/fly_sky520/article/details/47374345
+事件驱动
+http://blog.csdn.net/huagong_adu/article/details/6526221/
