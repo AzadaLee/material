@@ -1,0 +1,11 @@
+1、定义一个持久层类，继承spring data jpa的类并且同时继承用户自定义的类，此时命名注意：持久层类以Repository结尾，自定义的类在持久层的类
+后面加Custom
+public interface CustInfoRepository extends PagingAndSortingRepository<CustInfoEntity, String>, JpaSpecificationExecutor<CustInfoEntity>,CustInfoRepositoryCustom
+
+2、自定义一个实现类，命名要以上文的持久层类加impl，注意不能为CustInfoRepositoryCustom加impl
+public class CustInfoRepositoryImpl implements CustInfoRepositoryCustom
+
+3、使用时注入
+CustInfoRepository即可
+
+注意：CustInfoRepository该类会自动被spring扫描加入容器，无需加注解
