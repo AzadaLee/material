@@ -1,0 +1,88 @@
+1、DDL语句：修改表名、列名、列属性、增加列、删除列
+create table z_demo(
+       id varchar2(50),
+       c_name varchar2(20),
+       c_age number(3),
+       constraints pk_id primary key(id)
+)
+--修改表名：
+	alter table z_demo rename to z_test;
+	
+--修改列名
+alter table z_test rename column c_age to age;
+
+--删除列
+alter table z_test drop column age;
+
+--添加列
+alter table z_test add age varchar2(3);
+
+--修改列属性
+alter table z_test modify age number(3);
+
+以上注意点：a、修改列名和删除列的时候需要加column关键字，否则报错；b、修改列属性和添加列的时候不能加column关键字，否则会报错；c、修改列属性的时候，如果改变列的类型，则需要将该列的数据先清除
+
+2、case...when 
+create table z_test(
+       id varchar2(50) primary key,
+       score number(3,1)--此处的3代表精度，即最多能表示三位并且小数点后要占一位，故范围为：-99.9--99.9
+)
+
+alter table z_test add constraint check_score check(score between 0 and 100);
+
+insert into z_test(id,score) values(sys_guid(),null);
+
+select * from z_test;
+
+delete from z_test;
+
+--case when 使用
+--1、
+select t.id ,(
+                 case t.score
+                   when 0 then 
+                     '鹅蛋'
+                   when 99 then
+                     '满分'
+                   else '为空'
+                  end --一定不能忘记使用end结束，否则报错
+)score from z_test t;
+--2、
+select t.id,
+(case
+       when t.score=0 then 
+            '鹅蛋'
+       when t.score=99 then
+             '满分'
+       else '为空'
+ end
+)score 
+       from z_test t;
+	  
+在PL/SQL中的使用
+declare
+score number(3,1);
+begin 
+      select t.score into score from z_test t where t.id='37680C12443C3FDFE053CA9610C07879';
+      case score
+      when 0 then
+           dbms_output.put_line('鹅蛋');
+      when 99 then
+           dbms_output.put_line('满分');
+      else dbms_output.put_line('未输入');
+      end case;
+end;
+
+
+
+3、DDL和DML语句在PL/SQL中的使用
+declare 
+  sqlstr varchar2(2000);
+begin 
+  sqlstr := 'drop table z_test';
+  execute immediate sqlstr;
+end;
+
+
+
+
