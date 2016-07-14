@@ -98,7 +98,9 @@
 			end;
 		
 
-		
+varray在java中的应用，其中表t_test中的col字段是一个varray类型
+select column_value val from table(select t.col col from t_test t where t.id='37968AFD4B5C5F68E053CA9610C04B8A' );
+查询结果为List<Map<String,Object>>类型：[{val=x}, {val=xx}, {val=xxx}, {val=xxxx}]
 		
 总结：
 	1、记录类型和varray类型不同点：

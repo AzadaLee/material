@@ -1,0 +1,44 @@
+1、定义：
+	视图：一个基于一个表或者多个表的逻辑表，视图本身不包含任何数据。通俗来说，可以把视图看成一个虚拟的表，只是一个查询语句的结果，
+	它的数据最终是从表中获取的，这些表通常称为源表或基表。
+	当源表中的数据发生改变时，视图中的数据也会跟着发生变化。
+
+2、视图的数据来源：
+	a、单一表的子集；b、多表操作结果的子集；c、视图的子集
+	
+3、视图的作用：
+a、使数据简化。在表中有很多数据对于业务人员来说是冗余的，这是开发者会使用比较复杂的SQL语句得到自己想要的结果。实际开发中不能要求每个开发人员都具备这个能力，
+   所以，通常情况下是由一个能力比较强的开发者把复杂的语句做成视图，其他人员直接调用视图即可。隐藏了数据的复杂性
+b、使数据更加独立。程序开发时，大多数是程序直接访问数据库的，当这些表的结构随着业务的变化而不得不重新设计时，会影响到程序（通常表一旦设计完成就很难再做修改），
+   所以可以使得程序直接访问视图。这样视图就可以把程序和数据库隔离开来，降低开发者的劳动成本。
+c、增加安全性。视图可以查询表指定的列来展示给用户，而不必让使用者完全看见表的所有字段。这种情况很多是一个公司提供给其他合作伙伴查询数据的接口，而视图通常也会
+   设成只读属性。
+
+4、语法：
+	create [or replace][[no]force] view --force或noforce 表示是否强制创建视图（强制：在源表还未创建的时候就创建视图） noforce是默认值
+	[schema.]view  --视图的名称
+	[(alias,...) inline_constraint]  --视图的字段别名和内联约束
+		[out_of_line_constraint]  --
+	as subquery
+	[
+		with {read only | check option[constraint constraint_name]}  --with read only:设置视图只读，这样的视图具有更高的安全性；with check option:一旦使用该限制，当视图进行DML操作时，必须满足子查询条件
+	];
+	
+	例子：创建视图
+	create or replace view view_account_flow as select t.id,t.cust_id,t.account_id,t.account_type 
+       from bao_t_account_flow_info t where rownum <6  with read only;
+
+	select v.id id,v.cust_id custid from view_account_flow v;
+	
+	
+5、视图的约束：约束命令放在语句的末尾
+	a、with read only:
+		create or replace view v_test as select t.id,t.c_name from z_test t with read only;
+	在使用read only 约束之后，只能对视图进行查询操作，不能执行DML操作，如执行:insert into v_test(id,c_name) values(....)此时会报错
+	
+	b、with check option:在执行DML的时候c_name必须为zhangp，其他的字段可以修改
+		create or replace view v_test as select t.id,t.c_name,t.c_age from z_test t where t.c_name='zhangp' with check option;
+		
+6、视图的修改
+	视图的修改比较特殊，不能像表一样修改，更准确的说它没有修改项，可以覆盖原有视图，但这不会影响视图的使用。
+	因为视图本身不包含数据，所以覆盖原有视图就不存在数据丢失的问题。

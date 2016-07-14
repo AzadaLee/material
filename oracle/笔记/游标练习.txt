@@ -1,0 +1,120 @@
+﻿declare
+    custinfos bao_t_cust_info%rowtype;
+    cursor cur_custinfo is select * from bao_t_cust_info where rownum between 1 and 10;
+begin
+    open cur_custinfo; --打开游标
+    loop
+         --fetch cur_custinfo bulk collect into custinfos limit 2;--使用游标
+		 fetch cur_custinfo into custinfos;--提取数据
+         --exit when cur_custinfo%notfound;--查看游标是否还有内容，如同java中iterator.hasNext();
+		 if custinfos.cust_name is null then
+			dbms_output.put_line('客户姓名为空');
+		 else	
+			dbms_output.put_line('客户姓名：'||custinfos.cust_name);
+		 end if;
+    end loop;
+    close cur_custinfo;
+end;
+
+
+循环游标：三种方式
+1、loop ...end loop;
+declare
+    custinfos bao_t_cust_info%rowtype;
+    cursor cur_custinfo is select * from bao_t_cust_info where id='0332f122-7680-446d-be2e-c2d6cc1fda8e';
+begin
+    open cur_custinfo; --打开游标
+    loop
+		 fetch cur_custinfo into custinfos;--使用游标
+         exit when cur_custinfo%notfound;--查看游标是否还有内容，如同java中iterator.hasNext();不同点是：游标先获取内容，再判断，否则会多取出一条数据
+		 if custinfos.cust_name is null then
+			dbms_output.put_line('客户姓名为空');
+		 else	
+			dbms_output.put_line('客户姓名：'||custinfos.cust_name);
+		 end if;
+    end loop;
+    close cur_custinfo;
+end;
+
+2、while(..) loop ....end loop;
+declare 
+	cursor cur_cust is select * from bao_t_cust_info where rownum between 1 and 100;
+	custinfo bao_t_cust_info%rowtype;
+begin
+	open cur_cust;
+	fetch cur_cust into custinfo;--必须先将游标中的赋给变量，不然下文cur_cust%found 返回false
+	while(cur_cust%found) loop
+		if custinfo.cust_name is null then
+			dbms_output.put_line('客户姓名为空');
+		else
+			dbms_output.put_line(custinfo.cust_name);
+		end if;
+		fetch cur_cust into custinfo;
+	end loop;
+	close cur_cust;
+end;
+
+3、for ... in ..
+declare 
+	cursor cur_cust is select * from bao_t_cust_info where rownum between 1 and 100;
+	custinfo bao_t_cust_info%rowtype;
+begin
+	for custinfo in cur_cust loop--无需手动打开游标
+		if custinfo.cust_name is null then
+			dbms_output.put_line('客户姓名为空');
+		else
+			dbms_output.put_line('客户姓名：'||custinfo.cust_name);
+		end if;
+	end loop;
+end;
+
+
+总结：
+	1、使用for 变量 in cursor_name的时候无需打开游标，也无需使用fetch cursor_name into 变量提取数据，for..in 会自动提取并赋值；
+	2、使用while(cursor_name % found)的时候，必须先open cuosor并且 fetch cursor_name into 变量，否则%found的结果为false；
+
+
+
+	
+	
+批量处理游标
+declare
+    cursor cur_cust is select * from bao_t_cust_info where rownum between 1 and 100;
+    type tab_cust is table of bao_t_cust_info%rowtype;
+    custinfo tab_cust;
+begin
+   open cur_cust;
+	   loop
+		 fetch cur_cust bulk collect into custinfo limit 2;
+		 for i in 1 .. custinfo.count loop
+		   dbms_output.put_line('客户姓名：'||custinfo(i).cust_name);
+		 end loop;
+		 exit when cur_cust%notfound;
+	   end loop;
+   close cur_cust;
+end;
+    
+  
+	
+重点：
+declare
+	cursor cur_cust is select * from bao_t_cust_info t where t.id='7bdb04d1-953c-4092-ab49-b5431463b8d8';
+	custinfos bao_t_cust_info%rowtype; i number :=1;
+begin
+	open cur_cust;
+	if cur_cust%found then
+		dbms_output.put_line('结果为true');
+	else
+		dbms_output.put_line('结果为false');
+	end if;
+	fetch cur_cust into custinfos;
+	if cur_cust%found then
+		dbms_output.put_line('结果为true');
+	else
+		dbms_output.put_line('结果为false');
+	end if;
+end;
+
+输出：
+结果为false
+结果为true
