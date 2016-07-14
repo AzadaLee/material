@@ -29,6 +29,22 @@
 			dbms_output.put_line('创建时间：'||custinfo.c_createdate);
 		end;
 
+		例子：
+		declare 
+			v v_test := v_test('x','xx');
+			var1 varchar2(20);
+			var2 varchar2(20);
+			var3 varchar2(20);
+		begin
+			--var1 := v(1);
+			--dbms_output.put_line(var1);
+			--dbms_output.put_line(v);--报错，不可以直接输出数组
+			dbms_output.put_line(v.first());--得到第一个元素
+			dbms_output.put_line(v.limit());--数组容量，非数组元素个数
+			dbms_output.put_line(v.count());--数组元素个数
+		end;
+
+
 	语法b、
 		利用%rowtype声明记录类型数据
 		declare
@@ -38,6 +54,8 @@
 			....
 			...
 		end;
+		
+		
 		
 2、PL/SQL索引表类型(关联数组)
 	该类型和数组相似，它利用键值查找对应的值。这里的键和真正数组的下标不同，索引表中允许使用字符串。数组的长度不是固定的，可以根据需要自动增长。
@@ -73,43 +91,17 @@
 				arrlength number(3);
 			begin
 				custarray := cust_arr();--初始化数组
-				select t.cust_name into custarray from bao_t_cust_info t where rownum between 1 and 100;
+				
 				arrlength := custarray.count();
 				dbms_output.put_line('数组长度：'||arrlength);
 				--dbms_output.put_line('客户性别：'||custarray(i));
 			end;
 		
+
 		
 		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+总结：
+	1、记录类型和varray类型不同点：
+		a、记录类型不能使用sql进行创建（即：create or replace type r_test is record(....)），而动态数组类型是可以的，创建完成以后可以在types模块下查看；
+		b、记录类型在使用时只需声明一下即可，而动态数组类型在声明时或声明后必须初始化才能使用；
+		3、记录类型获取值得方式如同map，通过记录类型里面的键获取（r_test.field_name），而动态数组类型通过角标获取（v_test(1)）；
