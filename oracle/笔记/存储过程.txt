@@ -1,0 +1,32 @@
+1、定义
+	一段存储在数据库中执行某种功能的程序，其中包含一条或多条SQL语句，但是它的定义方式和PL/SQL中的块、包等有所区别。
+	存储过程可以通俗的理解为是存储在数据库服务器中的封装了一段或者多段SQL语句的PL/SQL代码块。
+2、优点
+	a、简化复杂的操作。存储过程可以把需要执行的多条sql语句封装到一个独立的单元中，用户只需调用这个单元就能达到目的。这样就实现了一人编写多人调用，同时缩短了平均开发时间。
+	b、增加数据的独立性。与视图的效果类似，利用存储过程可以把数据库基础数据和程序（或开发人员）隔离开来，当基础数据的结构发生变化时，可以修改存储过程，这样对程序来说基础
+	   的变化是不可见的，也就不需要修改程序代码。
+	c、提高安全性。使用存储过程有效的降低了出现错误的几率。如果不适用存储过程要想实现某项操作可能需要执行多条单独的SQL语句，而过多的执行步骤可能造成更高的出错几率。不仅如
+	   此，在实际开发过程中开发人员的水平参差不齐，由高水平的人编写存储过程，低水平的人员直接调用即可，这样就能避免很多不必要的错误发生。此外，存储过程也可以进行权限设置。
+	d、提高性能。完成一项复杂的功能可能需要多条SQL语句，同时SQL每次执行都需要编译，而存储过程可以包含多条SQL语句，而且创建完成后只需编译一次，以后就可以直接调用，从这方面
+	   来看存储过程可以提高性能。如果程序语言要实现某项比较复杂的功能，它会多次连接数据库，在使用存储过程的情况下，程序只需连接一次就能达到目的。
+	   
+3、有参数的存储过程
+	优点：使存储过程带参数将会增加存储过程的灵活性，给数据库编程带来极大的方便。
+	类型：输入(in)、输出(out)、输入输出(in out)
+	形式：常量、变量、表达式
+	
+	
+	注意：如果存储过程使用参数，那么调用的时候一定要为其指定参数，否则会出现错误。如果没有参数，则在定义的时候需要将括号去除。
+	解决方案：使用默认值
+	
+4、存储过程中使用游标
+	create or replace procedure p_test(var_cust_gender varchar2,var_rownum number)
+       is
+          cursor cur_cust is select * from bao_t_cust_info t where t.cust_gender = var_cust_gender and t.cust_name is not null and rownum between 1 and var_rownum;
+          custinfo bao_t_cust_info%rowtype;
+       begin 
+         for custinfo in cur_cust loop
+           insert into z_cust(id,c_name,c_gender,c_createdate) values(custinfo.id,custinfo.cust_name,custinfo.cust_gender,custinfo.create_date);
+         end loop;
+         commit;
+       end;

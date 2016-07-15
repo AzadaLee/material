@@ -1,0 +1,40 @@
+在package中操作
+1、声明一个游标
+	create package package_test is
+		type p_cursor is ref cursor;
+	end;
+	使用：
+	declare
+      custinfo bao_t_cust_info%rowtype;
+	  p_cursor package_test.p_cursor;
+	begin
+		open p_cursor for select * from bao_t_cust_info t where t.cust_gender = '男';
+		loop
+			fetch p_cursor into custinfo;
+            exit when p_cursor%notfound;
+			dbms_output.put_line('客户姓名：'||custinfo.cust_name);
+		end loop;
+	end;
+	
+	
+2、在package中声明方法
+	create or replace package package_test is
+		type p_cursor is ref cursor;
+		function getLength(str in varchar2) return number;--注意：不能使用方法名之后不能使用is
+	end;
+	
+	然后声明包体(package body)，并在包体中实现包头中的方法
+		create or replace package body package_test is
+			--没有实现包头中的getLength(..)方法，编译会出错
+		end;
+		
+		正确做法
+		create or replace package body package_test is
+			--实现方法
+			function getLength(str in varchar2) return number is
+				str_length number;
+			begin
+				execute immediate 'select length('||str||') from dual' into str_length;
+				return str_length;
+			end;
+		end;
