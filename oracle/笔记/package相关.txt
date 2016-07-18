@@ -1,6 +1,43 @@
+定义：包是一组相关过程、函数、变量、常量、类型和游标等PL/SQL程序设计元素的组合。
+	  包具有面向对象设计的特点，是对这些PL/SQL程序设计元素的封装。一个包由两个部分组成：
+	  (1)包package声明或定义：包定义部分是创建包的规范说明，声明包内数据类型、变量、常量、游标等元素。这部分也是为使用者提供了透明的接口。
+	  (2)包体packpage body:包体是包定义部分的具体实现。
+	  (3)将有联系的对象打成包,方便使用
+	  (4)包中对象包括储存过程,函数,游标,自定义类型和变量,可以在PL_SQL块中应用这些对象
+	  
+	  
+定义包头:
+	create or replace package pack_demo is 
+		type <typeName> is <Datatype> ;--定义类型
+		<ConstantName> constant <Datatype> :=<Value> ; --声明常量
+		
+		
+		
+		
+		
+		
+		
+注意：
+	只有当包头编辑成功后才能编辑包体.其中的函数名与过程名须和包头中的函数过程一样.
+	1 包声明和包体必须有相同的名字
+	2 包的开始没有begin语句，与存储过程和函数不同。
+	3 在包的声明部分定义函数和过程的名称和参数，具体实现在包体中定义
+	4 在包内声明常量、变量、类型定义、异常、及游标时不使用declare。
+	5 包内的过程和函数的定义不要create or replace语句。
+	6 包声明和包体两者分离。
+	
+	
+	
+	
+	
+	
+	
+	
+
+
 在package中操作
 1、声明一个游标
-	create package package_test is
+	create package package_test is   --注意：is 后面不能接begin关键字
 		type p_cursor is ref cursor;
 	end;
 	使用：
@@ -38,3 +75,35 @@
 				return str_length;
 			end;
 		end;
+
+		
+		
+综合实例
+声明包头：
+create or replace package package_test is
+    type p_cursor is ref cursor;
+    function getLength(str in varchar2) return number;
+    --procedure getCustinfo(cur out p_cursor);
+    procedure getCustinfo(c_name in varchar2);
+end;
+声明包体：
+create or replace package body package_test is
+      --实现方法
+      function getLength(str in varchar2) return number is
+        str_length number;
+        sqlstr varchar2(100) := 'select length('''|| str || ''') from dual';
+      begin
+        dbms_output.put_line('语句：'||sqlstr);
+        execute immediate sqlstr into str_length;
+        return str_length;
+      end getLength;
+      --实现存储过程
+      procedure getCustinfo(c_name in varchar2)
+      is
+          --c_name varchar2(20);
+          cur package_test.p_cursor;--包体中定义的游标，不能在begin..end 模块中直接使用，必须先在is模块下声明，或者作为参数定义出来
+      begin
+          open cur for select * from bao_t_cust_info ;
+      end getCustinfo;
+end;
+

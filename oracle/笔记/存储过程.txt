@@ -30,3 +30,25 @@
          end loop;
          commit;
        end;
+	   
+	   
+	   
+	   
+	   
+	   
+	   
+	   
+	   
+	   
+create or replace Package SYSBasic
+as
+  type cc_cursor is ref cursor;
+end SYSBasic;
+
+CREATE OR REPLACE PROCEDURE getall(
+    c_CurSor OUT SYSBASIC.cc_cursor  --光标结果
+)
+begin
+  open c_CurSor For
+    select * from z_cust;
+end getall;

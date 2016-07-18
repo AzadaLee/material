@@ -1,0 +1,45 @@
+触发器：
+	触发器和存储过程比较相似，它有PL/SQL编写并存储在数据库中，它可以调用存储过程，但触发器本身的调用和存储过程调用却是不一样的。存储过程由用户、应用程序、触发器或其他过程调用。
+	但是触发器只能数据库的特定事件来触发。所谓的特定事件主要包含如下几种类型的事件。
+	1、用户在指定的表或视图中做DML操作，主要包含如下几种：
+		a、insert操作，在指定的表或视图中增加数据；
+		b、update操作，对特定的表或视图修改数据；
+		c、delete操作，删除特定表或视图的数据。
+	2、用户做DDL操作，主要包含以下几种：
+		a、create操作，创建对象；
+		b、alter操作，修改对象；
+		c、drop操作，删除对象。
+	3、数据库事件，主要包括如下几种：
+		a、logon或logoff用户的登录或注销；
+		b、start up或shutdown数据的打开或关闭；
+		c、errors特定的错误信息等。
+		
+触发器的作用：
+	执行更复杂的业务逻辑；
+	防止无意义的数据操作；
+	提供审计；
+	实现完整性规则；
+	保证数据的同步复制。
+触发器的类型：
+	1、数据库操作语言(DML)触发器；
+	2、数据库定义语言(DDL)触发器；
+	3、复合触发器。此类触发器是oracle 11G的新特性，它相当于一个触发器中包含4中类型的触发器，其中包含了before类型的语句级、before类型的行级、before类型的行级；
+	4、instead of触发器。此类触发器通常作用在视图上，对由多个源表的视图做DML操作通常是不被允许的，如果遇到这种情况就可以利用instead of类型触发器解决问题。
+	5、用户和系统事件触发器。
+	
+触发器语句：
+	create [or replace] trigger [schema.] trigger
+		{before | after | instead of}
+			{delete | insert | update of column [,column]...}
+		{on [schema.]table |[schema.]view}
+			[for each row]  --表示行级触发器，省略则为语句触发器
+			[follows [schema.] trigger]
+			[enable|disable]
+			[when(condition)]
+			
+	before:触发器的类型为前触发；
+	after:触发器的类型为后触发；
+	instead of:替换类型触发器
+	行级触发器和语句触发器的区别：
+		行级触发器对DML语句影响的每个行执行一次，语句级触发器对每个DML语句执行一次。
+		如果一条INSERT语句在TABLE表中插入500行，那么这个表上的语句级触发器只执行一次，而行级的触发器就要执行500次了。
