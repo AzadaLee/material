@@ -1,0 +1,11 @@
+spool命令
+	在SQL*Plus中查询出的结果经常需要保存到文件中。保存结果的命令如下：
+		spool filename;
+		spool off;
+		
+		
+	实例：
+		第一步：spool f://test.sql;   --保存到f盘的test.sql文件中
+		第二部：select * from test;   --查询结果
+		第三部：spool off;             --将结果刷新到文件中
+		
