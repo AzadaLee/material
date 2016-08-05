@@ -1,0 +1,22 @@
+AnnotationConfigEmbeddedWebApplicationContext
+DefaultListableBeanFactory beanFactory  位于GenericApplicationContext类中
+
+单例放在下面map中
+/** Cache of singleton objects: bean name --> bean instance */
+private final Map<String, Object> singletonObjects = new ConcurrentHashMap<String, Object>(256);
+
+List<HandlerMapping> handlerMappings:在第一次请求的时候初始化
+
+获取某个接口所有实现类的实例：
+	Ancestors：祖先
+	BeanFactoryUtils.beanOfTypeIncludingAncestors(ListableBeanFactory lbf, Class<T> type, boolean includeNonSingletons, boolean allowEagerInit)；
+	Map<String, T> result = new LinkedHashMap<String, T>(4);
+	result.putAll(lbf.getBeansOfType(type, includeNonSingletons, allowEagerInit));
+	private String[] doGetBeanNamesForType(ResolvableType type, boolean includeNonSingletons, boolean allowEagerInit)
+	for (String beanName : this.beanDefinitionNames) {//该集合是在容器加载的时候就初始化完成
+	
+	}
+	
+	public boolean isTypeMatch(String name, ResolvableType typeToMatch)：name为注入到beanDefinitionNames集合中bean的名字
+	
+	Object beanInstance = getSingleton(beanName, false);会从容器中取

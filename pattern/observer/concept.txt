@@ -1,0 +1,77 @@
+一、认识观察者模式
+	从报纸和杂志的订阅来看：
+		1、报社的业务就是出版报纸；
+		2、向某家报社订阅报纸，只要他们有新报纸出版，就会给你送来。只要你是他们的订户，你就会一直收到新报纸；
+		3、当你不想再看报纸的时候，取消订阅，他们就不会再送新报纸来；
+		4、只要报社还在运营，就会一直有人或单位向他们订阅报纸或取消报纸。
+	这里的出版者 + 订阅者 = 观察者模式，只是名称不一样，出版者改称为"主题"(Subject)，订阅者改成为"观察者"(Observer)。
+	好莱坞经典语句：Don't call us,we will call you!
+	
+二、设计：
+	基础设施
+		Subject:
+			1、观察者的集合；
+			2、添加观察者的方法(registerObserver(Observer o))；
+			3、移除观察者的方法(removeObserver(Observer o))；
+			4、通知观察者的方法(notifyObservers())
+		Observer:
+			1、主题对象(为了以后添加或移除观察者)；
+			2、接收通知的方法(receiveNotice())
+	实现：
+		public class WeatherData implements Subject{
+			private AbstractQueue<Observer> observers;
+			private float temperature;
+			private float humidity;
+			private float pressure;
+			public WeatherData(){
+				observers = new ArrayBlockingQueue<Observer>(Integer.MAX_VALUE);
+			}
+			@Override
+			public void registerObserver(Observer observer) {
+				observers.add(observer);
+			}
+
+			@Override
+			public void removeObServer(Observer observer) {
+				observers.remove(observer);
+			}
+
+			@Override
+			public void notifyObserver() {
+				for(Observer o : observers){
+					o.update(temperature, humidity, pressure);
+				}
+			}
+			
+			@Override
+			public void measurementsChanged() {
+				notifyObserver();
+			}
+			
+			public void setMeasurements(float temperature,float humidity,float pressure){
+				this.temperature = temperature;
+				this.humidity = humidity;
+				this.pressure = pressure;
+				measurementsChanged();
+			}
+
+		}
+		
+		public class CurrentConditionsDisplay implements Observer, DisplayElement {
+			private Subject weatherData;
+			
+			public CurrentConditionsDisplay(Subject weatherData){
+				this.weatherData = weatherData;
+				weatherData.registerObserver(this);
+			}
+			@Override
+			public void display() {
+
+			}
+
+			@Override
+			public void update(float temp, float humidity, float pressure) {
+				
+			}
+
+		}
