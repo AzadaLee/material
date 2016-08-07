@@ -107,3 +107,43 @@ create or replace package body package_test is
       end getCustinfo;
 end;
 
+
+
+使用实例
+create or replace package pack4Test is
+  type record_prod is record (
+    prod_name varchar2(300),
+    prod_id varchar2(50),
+    prod_price number(10,2),
+    prod_factory varchar2(300)
+	);
+  type cur_prod is ref cursor return record_prod;
+  procedure pro_prod(
+    prod_name in out varchar2,
+    prod_id out varchar2,
+    prod_price out number,
+    prod_factory out varchar2
+  );
+end;
+
+create or replace package body pack4Test is
+  procedure pro_prod(
+    prodName in out varchar2,
+    prodId out varchar2,
+    prodPrice out number,
+    prodFactory out varchar2
+    ) is
+      curProd pack4Test.cur_prod;--不能直接使用包头中的游标变量
+    begin
+      open curProd for
+        select t.prod_name,t.id,t.prod_price,t.prod_factory 
+          from t_product t
+            where t.prod_name = prodName;
+       select t.prod_name,t.id,t.prod_price,t.prod_factory 
+         into prodName,prodId,prodPrice,prodFactory
+          from t_product t
+            where t.prod_name = prodName;     
+    end;
+end;
+
+

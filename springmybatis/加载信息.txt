@@ -1,0 +1,28 @@
+
+mappedStatements[
+	findByProdNameAndProdFacyory=org.apache.ibatis.mapping.MappedStatement@291e12f7,
+	findById=org.apache.ibatis.mapping.MappedStatement@756f2b37,
+	findByProdName=org.apache.ibatis.mapping.MappedStatement@557e641c,
+	person.txm.mybatis.dao.ProductMapper.findByProdName=org.apache.ibatis.mapping.MappedStatement@557e641c,
+	person.txm.mybatis.dao.ProductMapper.findById=org.apache.ibatis.mapping.MappedStatement@756f2b37,
+	person.txm.mybatis.dao.ProductMapper.findByProdNameAndProdFacyory=org.apache.ibatis.mapping.MappedStatement@291e12f7 
+]
+
+
+resultMap[
+	baseMap1=org.apache.ibatis.mapping.ResultMap@20b0513a, 
+	baseMap2=org.apache.ibatis.mapping.ResultMap@17a4c79a, 
+	baseMap3=org.apache.ibatis.mapping.ResultMap@432c5b96, 
+	person.txm.mybatis.dao.ProductMapper.baseMap1=org.apache.ibatis.mapping.ResultMap@20b0513a, 
+	person.txm.mybatis.dao.ProductMapper.baseMap3=org.apache.ibatis.mapping.ResultMap@432c5b96, 
+	person.txm.mybatis.dao.ProductMapper.baseMap2=org.apache.ibatis.mapping.ResultMap@17a4c79a
+]
+
+parameterMap[
+	paramMap2=org.apache.ibatis.mapping.ParameterMap@1d4a4744, 
+	paramMap1=org.apache.ibatis.mapping.ParameterMap@3e2f7389, 
+	person.txm.mybatis.dao.ProductMapper.paramMap1=org.apache.ibatis.mapping.ParameterMap@3e2f7389, 
+	person.txm.mybatis.dao.ProductMapper.paramMap2=org.apache.ibatis.mapping.ParameterMap@1d4a4744
+]
+
+[interface person.txm.mybatis.dao.ProductMapper=org.apache.ibatis.binding.MapperProxyFactory@1679f1fb]

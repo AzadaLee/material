@@ -1,0 +1,52 @@
+handlerMappings[
+	org.springframework.web.servlet.handler.SimpleUrlHandlerMapping@61355681, 
+	org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping@74c26102, 
+	org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping@56f0631, 
+	org.springframework.web.servlet.handler.SimpleUrlHandlerMapping@3bff7dc0, 
+	org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport$EmptyHandlerMapping@298e706, 
+	org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport$EmptyHandlerMapping@4673c3f
+]
+
+handlerAdapters[
+	org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter@48c81180, 
+	org.springframework.web.servlet.mvc.HttpRequestHandlerAdapter@46f50fd4, 
+	org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter@2e24bb1
+]
+
+org.springframework.web.servlet.mvc.method.annotation.ModelAndViewMethodReturnValueHandler@78343bce, 
+org.springframework.web.method.annotation.ModelMethodProcessor@2d428f09, 
+org.springframework.web.servlet.mvc.method.annotation.ViewMethodReturnValueHandler@6cbcaf15, 
+org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitterReturnValueHandler@578ac378, 
+org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBodyReturnValueHandler@5727282e,	 
+org.springframework.web.servlet.mvc.method.annotation.HttpEntityMethodProcessor@4bbf10b5, 
+org.springframework.web.servlet.mvc.method.annotation.HttpHeadersReturnValueHandler@6ce201ec, 
+org.springframework.web.servlet.mvc.method.annotation.CallableMethodReturnValueHandler@69ec64cc, 
+org.springframework.web.servlet.mvc.method.annotation.DeferredResultMethodReturnValueHandler@1ecdc368, 
+org.springframework.web.servlet.mvc.method.annotation.AsyncTaskMethodReturnValueHandler@56d7f0a4, 
+org.springframework.web.servlet.mvc.method.annotation.ListenableFutureReturnValueHandler@7af7cb86, 
+org.springframework.web.method.annotation.ModelAttributeMethodProcessor@2253097c, 
+org.springframework.web.servlet.mvc.method.annotation.RequestResponseBodyMethodProcessor@7993bd7e, 
+org.springframework.web.servlet.mvc.method.annotation.ViewNameMethodReturnValueHandler@527dd98d, 
+org.springframework.web.method.annotation.MapMethodProcessor@4455e24a, 
+org.springframework.web.method.annotation.ModelAttributeMethodProcessor@627b8b52
+]
+
+
+viewResolvers[
+	org.springframework.web.servlet.view.ContentNegotiatingViewResolver@7d9c28ef, 
+	org.springframework.web.servlet.view.BeanNameViewResolver@1743a356, 
+	org.springframework.web.servlet.view.ViewResolverComposite@59986f08, 
+	org.springframework.web.servlet.view.InternalResourceViewResolver@26a1a42c
+]
+
+messageConverters[
+	org.springframework.http.converter.ByteArrayHttpMessageConverter@3bcd8014, 
+	org.springframework.http.converter.StringHttpMessageConverter@38ad1075, 
+	org.springframework.http.converter.StringHttpMessageConverter@3093bfb8, 
+	org.springframework.http.converter.ResourceHttpMessageConverter@340fe1f2, 
+	org.springframework.http.converter.xml.SourceHttpMessageConverter@7ebaf191, 
+	org.springframework.http.converter.support.AllEncompassingFormHttpMessageConverter@2349a797, 
+	org.springframework.http.converter.json.	@6a138e64, 
+	org.springframework.http.converter.json.MappingJackson2HttpMessageConverter@3899bc9a, 
+	org.springframework.http.converter.xml.Jaxb2RootElementHttpMessageConverter@752d3f7d
+]

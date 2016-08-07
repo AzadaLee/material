@@ -1,0 +1,60 @@
+Configuration属性
+	paramMap{
+		paramMap1=org.apache.ibatis.mapping.ParameterMap@2c5ae452, 
+		person.txm.mybatis.dao.ProductMapper.paramMap1=org.apache.ibatis.mapping.ParameterMap@2c5ae452, 
+		
+		paramMap2=org.apache.ibatis.mapping.ParameterMap@343da3e, 
+		person.txm.mybatis.dao.ProductMapper.paramMap2=org.apache.ibatis.mapping.ParameterMap@343da3e
+	}
+		
+
+	resultMap{
+		baseMap1=org.apache.ibatis.mapping.ResultMap@63d8669d, 
+		baseMap2=org.apache.ibatis.mapping.ResultMap@143900a1, 
+		baseMap3=org.apache.ibatis.mapping.ResultMap@2a585466, 
+		person.txm.mybatis.dao.ProductMapper.baseMap1=org.apache.ibatis.mapping.ResultMap@63d8669d, person.txm.mybatis.dao.ProductMapper.baseMap3=org.apache.ibatis.mapping.ResultMap@2a585466, 
+		person.txm.mybatis.dao.ProductMapper.baseMap2=org.apache.ibatis.mapping.ResultMap@143900a1
+	}
+
+
+	mappedStatement[
+
+		findByProdNameAndProdFacyory2=org.apache.ibatis.mapping.MappedStatement@4d9fea98
+		person.txm.mybatis.dao.ProductMapper.findByProdNameAndProdFacyory2=org.apache.ibatis.mapping.MappedStatement@4d9fea98, 
+		
+		findUserInfo=org.apache.ibatis.mapping.MappedStatement@2b7b4e3e, person.txm.mybatis.dao.UserMapper.findUserInfo=org.apache.ibatis.mapping.MappedStatement@2b7b4e3e,
+		
+		findById=org.apache.ibatis.mapping.MappedStatement@3de2c8f8, 
+		person.txm.mybatis.dao.ProductMapper.findById=org.apache.ibatis.mapping.MappedStatement@3de2c8f8,
+		
+		findByProdNameAndProdFacyory=org.apache.ibatis.mapping.MappedStatement@357bb8c6, 	
+		person.txm.mybatis.dao.ProductMapper.findByProdNameAndProdFacyory=org.apache.ibatis.mapping.MappedStatement@357bb8c6
+	]
+
+	MappedStatement属性
+		RawSqlSource
+			paramMap[//接口参数为单个String类型的入参
+				ParameterMapping{property='prodName', mode=IN, javaType=class java.lang.String, jdbcType=null, numericScale=null, resultMapId='null', jdbcTypeName='null', expression='null'}
+			]
+			sql:select * from t_product t where t.prod_name = ?
+			
+			paramMap[//接口中的参数为两个String类型的入参
+				ParameterMapping{property='0', mode=IN, javaType=class java.lang.Object, jdbcType=null, numericScale=null, resultMapId='null', 					jdbcTypeName='null', expression='null'}, 
+				ParameterMapping{property='1', mode=IN, javaType=class java.lang.Object, jdbcType=null, numericScale=null, resultMapId='null', jdbcTypeName='null', expression='null'}
+			]
+			sql:select t.id, t.prod_name, t.prod_price, t.prod_factory, t.prod_produce_date
+				from t_product t
+ 				where t.prod_name = ?
+			
+			
+			
+			paramMap[//接口参数为Map类型
+				ParameterMapping{property='prodName', mode=IN, javaType=class java.lang.Object, jdbcType=null, numericScale=null, resultMapId='null', jdbcTypeName='null', expression='null'}, 
+				ParameterMapping{property='prodFactory', mode=IN, javaType=class java.lang.Object, jdbcType=null, numericScale=null, resultMapId='null', jdbcTypeName='null', expression='null'}
+			]
+			sql:select t.id, t.prod_name, t.prod_price, t.prod_factory, t.prod_produce_date
+					from t_product t
+						where t.prod_name = ?
+							and t.prod_factory = ?
+			
+	
