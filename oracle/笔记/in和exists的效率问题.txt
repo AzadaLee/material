@@ -1,0 +1,30 @@
+in和exists的效率问题
+表T1 含有c1和c2字段，c1含唯一索引
+表T2 含有c1和c2字段，c1含唯一索引
+并且T1<<T2
+
+select * from T1 where T1.c1 in (select T2.c1 from T2);
+执行过程：
+	1、先执行子查询:select distinct T2.c1 from T2;
+	2、将1的结果和select * from T1 ;做笛卡尔积;
+	3、过滤2的结果，条件T1.c1 = T2.c1;
+因为T2的c1字段加了唯一索引或c1是主键，那么会导致select distinct T2.c1 from T2 的结果集会很多，和T1表形成笛卡尔积的时候中间过程表的数据量会很大，
+再次执行过程3的时候，在相同条件下，时间相对会长些。
+
+如果执行select * from T1 where T1.c1 in (select T2.c2 from T2);
+因为T2的c2字段未加唯一索引，故select distinct c2 from T2的数据量可能会相对较少，将结果和T1表做笛卡尔积，执行过程3时，因为数据量较小，速度也会较快。
+
+总结：用in做子查询时，效率的高低取决于子查询中的结果集的数量（如子查询有条件，子查询的查询速度当然也会有影响）。
+适用场景：子查询基于的表数据量较小的时候。
+
+
+这个时候用exists相对合适：select * from T1 where exists (select null from T2 where T2.c1 = T1.c1);
+此sql的执行过程类似于：
+	for TempT in (select * from T1) loop
+		if(exists(select null from T2 where T2.c1 = TempT.c1)) then
+			output the record;
+		end if;
+	end loop;
+因为T1小表，所以TempT数据量也是小表，又因为T2的c1字段上加了主键或唯一索引select null from T2 where T2.c1 = T1.c1的执行速度将会非常快，所以整个过程相对in来说速度要快。
+总结：因为exists会循环主表全表，如果主表数据量较大时，循环的时间较长，执行的效率也就降低。
+适用场景：主表数据量较小，子查询基于的表数据量大并且子查询中做条件的字段加了唯一索引。
