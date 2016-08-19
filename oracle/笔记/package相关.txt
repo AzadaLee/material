@@ -146,4 +146,38 @@ create or replace package body pack4Test is
     end;
 end;
 
+CREATE PACKAGE emp_data AS 
+	TYPE EmpRecTyp IS RECORD ( 
+		emp_id NUMBER(4), 
+		emp_name VARCHAR2(10), 
+		job_title VARCHAR2(9), 
+		dept_name VARCHAR2(14), 
+		dept_loc VARCHAR2(13)
+	); 
+	TYPE EmpCurTyp IS REF CURSOR RETURN EmpRecTyp; 
+	PROCEDURE get_staff ( 
+		dept_no IN NUMBER, 
+		emp_cv IN OUT EmpCurTyp
+	); 
+END; 
 
+CREATE PACKAGE BODY emp_data AS 
+	PROCEDURE get_staff ( 
+		dept_no IN NUMBER, 
+		emp_cv IN OUT EmpCurTyp) IS 
+	BEGIN 
+		OPEN emp_cv FOR 
+		SELECT empno, ename, job, dname, loc FROM emp, dept 
+			WHERE emp.deptno = dept_no AND emp.deptno = dept.deptno 
+			ORDER BY empno; 
+	END; 
+END; 
+
+COLUMN EMPNO HEADING Number 
+COLUMN ENAME HEADING Name 
+COLUMN JOB HEADING JobTitle 
+COLUMN DNAME HEADING Department 
+COLUMN LOC HEADING Location 
+SET AUTOPRINT ON 
+VARIABLE cv REFCURSOR 
+EXECUTE emp_data.get_staff(20, :cv)  

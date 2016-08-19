@@ -1,0 +1,97 @@
+public BoundSql(Configuration configuration, String sql, List<ParameterMapping> parameterMappings, Object parameterObject) {
+    this.sql = sql;
+    this.parameterMappings = parameterMappings;
+    this.parameterObject = parameterObject;
+    this.additionalParameters = new HashMap<String, Object>();
+    this.metaParameters = configuration.newMetaObject(additionalParameters);
+  }
+  
+  
+  将参数取出放到prepareStatement的参数数组中
+  public void setParameters(PreparedStatement ps) {
+    ErrorContext.instance().activity("setting parameters").object(mappedStatement.getParameterMap().getId());
+    List<ParameterMapping> parameterMappings = boundSql.getParameterMappings();
+    if (parameterMappings != null) {
+      for (int i = 0; i < parameterMappings.size(); i++) {
+        ParameterMapping parameterMapping = parameterMappings.get(i);
+        if (parameterMapping.getMode() != ParameterMode.OUT) {
+          Object value;
+          String propertyName = parameterMapping.getProperty();
+          if (boundSql.hasAdditionalParameter(propertyName)) { // issue #448 ask first for additional params
+            value = boundSql.getAdditionalParameter(propertyName);
+          } else if (parameterObject == null) {
+            value = null;
+          } else if (typeHandlerRegistry.hasTypeHandler(parameterObject.getClass())) {
+            value = parameterObject;
+          } else {
+            MetaObject metaObject = configuration.newMetaObject(parameterObject);
+            value = metaObject.getValue(propertyName);
+          }
+          TypeHandler typeHandler = parameterMapping.getTypeHandler();
+          JdbcType jdbcType = parameterMapping.getJdbcType();
+          if (value == null && jdbcType == null) {
+            jdbcType = configuration.getJdbcTypeForNull();
+          }
+          try {
+            typeHandler.setParameter(ps, i + 1, value, jdbcType);
+          } catch (TypeException e) {
+            throw new TypeException("Could not set parameters for mapping: " + parameterMapping + ". Cause: " + e, e);
+          } catch (SQLException e) {
+            throw new TypeException("Could not set parameters for mapping: " + parameterMapping + ". Cause: " + e, e);
+          }
+        }
+      }
+    }
+  }
+  
+  
+  
+  //截取参数
+  public String parse(String text) {
+    final StringBuilder builder = new StringBuilder();
+    final StringBuilder expression = new StringBuilder();
+    if (text != null && text.length() > 0) {
+      char[] src = text.toCharArray();
+      int offset = 0;
+      // search open token
+      int start = text.indexOf(openToken, offset);
+      while (start > -1) {
+        if (start > 0 && src[start - 1] == '\\') {
+          // this open token is escaped. remove the backslash and continue.
+          builder.append(src, offset, start - offset - 1).append(openToken);
+          offset = start + openToken.length();
+        } else {
+          // found open token. let's search close token.
+          expression.setLength(0);
+          builder.append(src, offset, start - offset);
+          offset = start + openToken.length();
+          int end = text.indexOf(closeToken, offset);
+          while (end > -1) {
+            if (end > offset && src[end - 1] == '\\') {
+              // this close token is escaped. remove the backslash and continue.
+              expression.append(src, offset, end - offset - 1).append(closeToken);
+              offset = end + closeToken.length();
+              end = text.indexOf(closeToken, offset);
+            } else {
+              expression.append(src, offset, end - offset);
+              offset = end + closeToken.length();
+              break;
+            }
+          }
+          if (end == -1) {
+            // close token was not found.
+            builder.append(src, start, src.length - start);
+            offset = src.length;
+          } else {
+            builder.append(handler.handleToken(expression.toString()));
+            offset = end + closeToken.length();
+          }
+        }
+        start = text.indexOf(openToken, offset);
+      }
+      if (offset < src.length) {
+        builder.append(src, offset, src.length - offset);
+      }
+    }
+    return builder.toString();
+  }
