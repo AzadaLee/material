@@ -1,0 +1,43 @@
+前提：
+1、当两个对象的obj1.equals(obj2)为true时，则这两个对象的hashCode值也一定相同
+2、当两个对象的obj1.hashCode()== obj2.hashCode()为false,则这两个对象的equals值一定为false
+
+
+public V put(K key, V value) {
+	if (key == null)
+		return putForNullKey(value);
+	int hash = hash(key.hashCode());
+	int i = indexFor(hash, table.length);
+	for (Entry<K,V> e = table[i]; e != null; e = e.next) {
+		Object k;
+		if (e.hash == hash && ((k = e.key) == key || key.equals(k))) {
+			V oldValue = e.value;
+			e.value = value;
+			e.recordAccess(this);
+			return oldValue;
+		}
+	}
+
+	modCount++;
+	addEntry(hash, key, value, i);
+	return null;
+}
+	
+	
+public V get(Object key) {
+	if (key == null)
+		return getForNullKey();
+	int hash = hash(key.hashCode());
+	for (Entry<K,V> e = table[indexFor(hash, table.length)];
+		 e != null;
+		 e = e.next) {
+		Object k;
+		if (e.hash == hash && ((k = e.key) == key || key.equals(k)))
+			return e.value;
+	}
+	return null;
+}
+
+
+HashMap导致内存泄露的原因：put值的时候，会将key进行hashCode计算，放进Entry对象中；
+改变对象参与hashCode值计算的属性以后，再get改对象，因为get时传进去的key此时hashCode已经变了，而hashMap中table中的Entry中hashCode值没有变，所以get不到
